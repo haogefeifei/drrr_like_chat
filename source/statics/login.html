@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head lang="zh">
+    <meta charset="UTF-8">
+    <title>DOLLARS聊天室</title>
+    <link rel="icon" type="image/x-icon" href="img/favicon.ico">
+    <link href="css/app.css" rel="stylesheet">
+    <script src="js/jquery-2.1.4.min.js"></script>
+    <script type="text/javascript">
+        // body加载后执行
+        $(document).ready(function () {
+            $("#home-extra-toggle").on("click", function () {
+                $("#home-extra").toggle()
+            });
+            $(".login-icons-list li input").on("click", function () {
+                $(".login-icons-list .user-icon").removeClass("active"), $(this).prev().addClass("active")
+            });
+            $(".login-icons-list li:first-child input").prop("checked", !0).prev().addClass("active")
+        });
+
+    </script>
+</head>
+<body>
+<div id="body">
+    <div class="home-wrap">
+        <div class="login-logo"></div>
+        <form action="login" method="post">
+            <div class="login-form field" id="t_form">
+                <div class="home-name">
+                    <label for="form-name">Username:</label>
+                    <input type="text" id="form-name" name="name" size="10" maxlength="20" class="home-name-input"
+                           required autocomplete="on">
+                </div>
+                <div class="home-submit">
+                    <input type="submit" name="login" value="ENTER" class="submit-input home-submit-input">
+                </div>
+                <input type="hidden" name="token" value="${token}"/>
+                <input type="hidden" name="uip" value="${uip}="/>
+            </div>
+            <div class="home-meta">
+                <p>
+                    <a href="#home-extra" class="needsclick" id="home-extra-toggle">Prefs</a>
+                    - <a href="#" class="needsclick">FAQ</a> - <a href="#" class="needsclick">Board</a></p>
+            </div>
+            <div id="home-extra" class="home-extra">
+
+                <div class="home-language">
+                    <label for="form-language-select">UI Language:</label>
+                    <select id="form-language-select" name="language">
+                        <option value="zh-CN" selected>
+                            中文（简体）
+                        </option>
+                    </select>
+                </div>
+
+                <ul class="login-icons-list">
+                    <li>
+                        <label>
+                            <div class="user-icon avatar-setton needsclick" data-avatar="setton"></div>
+                            <input type="radio" name="icon" value="setton">
+                        </label>
+                    </li>
+                    <li>
+                        <label>
+                            <div class="user-icon avatar-zaika needsclick" data-avatar="zaika"></div>
+                            <input type="radio" name="icon" value="zaika">
+                        </label>
+                    </li>
+                    <li>
+                        <label>
+                            <div class="user-icon avatar-bakyura-2x needsclick" data-avatar="bakyura-2x"></div>
+                            <input type="radio" name="icon" value="bakyura-2x">
+                        </label>
+                    </li>
+                    <li>
+                        <label>
+                            <div class="user-icon avatar-kakka needsclick" data-avatar="kakka"></div>
+                            <input type="radio" name="icon" value="kakka">
+                        </label>
+                    </li>
+                    <li>
+                        <label>
+                            <div class="user-icon avatar-setton-2x needsclick" data-avatar="setton-2x"></div>
+                            <input type="radio" name="icon" value="setton-2x">
+                        </label>
+                    </li>
+                    <li>
+                        <label>
+                            <div class="user-icon avatar-tanaka needsclick" data-avatar="tanaka"></div>
+                            <input type="radio" name="icon" value="tanaka">
+                        </label>
+                    </li>
+                    <li>
+                        <label>
+                            <div class="user-icon avatar-bakyura needsclick" data-avatar="bakyura"></div>
+                            <input type="radio" name="icon" value="bakyura">
+                        </label>
+                    </li>
+                    <li>
+                        <label>
+                            <div class="user-icon avatar-zawa needsclick" data-avatar="zawa"></div>
+                            <input type="radio" name="icon" value="zawa">
+                        </label>
+                    </li>
+                    <li>
+                        <label>
+                            <div class="user-icon avatar-gg needsclick" data-avatar="gg"></div>
+                            <input type="radio" name="icon" value="gg">
+                        </label>
+                    </li>
+                    <li>
+                        <label>
+                            <div class="user-icon avatar-san-2x needsclick" data-avatar="san-2x"></div>
+                            <input type="radio" name="icon" value="san-2x">
+                        </label>
+                    </li>
+                    <li>
+                        <label>
+                            <div class="user-icon avatar-kanra-2x needsclick" data-avatar="kanra-2x"></div>
+                            <input type="radio" name="icon" value="kanra-2x">
+                        </label>
+                    </li>
+                    <li>
+                        <label>
+                            <div class="user-icon avatar-kanra needsclick" data-avatar="kanra"></div>
+                            <input type="radio" name="icon" value="kanra">
+                        </label>
+                    </li>
+                    <li>
+                        <label>
+                            <div class="user-icon avatar-kyo-2x needsclick" data-avatar="kyo-2x"></div>
+                            <input type="radio" name="icon" value="kyo-2x">
+                        </label>
+                    </li>
+                    <li>
+                        <label>
+                            <div class="user-icon avatar-zaika-2x needsclick" data-avatar="zaika-2x"></div>
+                            <input type="radio" name="icon" value="zaika-2x">
+                        </label>
+                    </li>
+                    <li>
+                        <label>
+                            <div class="user-icon avatar-tanaka-2x needsclick" data-avatar="tanaka-2x"></div>
+                            <input type="radio" name="icon" value="tanaka-2x">
+                        </label>
+                    </li>
+                </ul>
+
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>

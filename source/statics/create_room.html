@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/x-icon" href="img/favicon.ico">
+    <title>创建房间 - DOLLARS 聊天室</title>
+    <link href="css/app.css" rel="stylesheet">
+</head>
+<body>
+<div id="body">
+    <div class="wrap clearfix">
+        <h2 class="sr-only">创建房间</h2>
+
+        <form action="create_room_ok" method="post" role="form">
+            <div class="form-group">
+                <label for="form-user-name">房间名称</label>
+                <input type="text" class="form-control" id="form-user-name" name="name" value="" maxlength="20" required
+                       autofocus>
+            </div>
+            <div class="form-group">
+                <label for="form-user-limit">成员人数</label>
+                <select class="form-control" id="form-user-limit" name="limit" required>
+                    <% a=2 %>
+                    %while a<=room_limit:
+                        % if a==10:
+                            <option value="${a}" selected>${a}</option>
+                        % else:
+                            <option value="${a}">${a}</option>
+                        % endif
+                        <% a += 1%>
+                    %endwhile
+                </select>
+            </div>
+            <div class="pull-right">
+                <a href="lounge" class="btn btn-default">返回</a>
+                <input type="submit" value="创建房间" class="create-room-submit-input btn btn-primary">
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>

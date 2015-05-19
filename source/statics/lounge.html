@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head lang="zh">
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/x-icon" href="img/favicon.ico">
+    <title>房间大厅 - DOLLARS 聊天室</title>
+    <link href="css/app.css" rel="stylesheet">
+    <script src="js/jquery-2.1.4.min.js"></script>
+    <script type="text/javascript">
+        // body加载后执行
+        $(document).ready(function () {
+
+            //设置背景颜色
+            var a = $(".lounge-profile").data("avatar");
+            $("body").addClass("scheme-" + a);
+        });
+
+    </script>
+</head>
+<body>
+<div id="body">
+    <ul id="profile" class="lounge-profile" data-avatar="${user.icon}">
+        <li class="icon">
+            <div class="avatar avatar-${user.icon}"></div>
+        </li>
+        <li class="name">${user.name}</li>
+        <li class="user-ip" style="display:none">${user.uip}</li>
+        <li class="logout">
+            <form action="logout" method="post">
+                <input type="submit" class="btn btn-primary btn-invert" value="登出">
+            </form>
+        </li>
+    </ul>
+    <div class="wrap">
+
+        ## --------- 公告栏 暂时隐藏 ---------
+
+        <div class="lounge-top" data-hide="true">
+            <span data-hide="true" data-langs="zh-CN zh-TW">
+            <a href="../static/">离线讨论</a>
+            </span>
+
+            &#x30FB;<a href="../donate/">捐助</a>
+		    <span data-langs-hide="zh-CN zh-TW">
+			&#x30FB;<a href="http://dollars-bbs.org/" target="_blank">BBS</a>
+		    </span>
+
+        </div>
+
+        ## --------- 公告栏 ---------
+
+        <div class="lounge-nav lounge-nav-birthday" data-langs="zh-CN">
+            <a href="#">测试中！</a>
+            <span class="pull-right">2015-5-19</span>
+        </div>
+
+        ## --------- 状态以及创建房间 ---------
+
+        <div class="lounge-nav">
+            <div class="lounge-links pull-left">
+                <a href="lounge"><b>刷新</b></a>
+                -
+                目前共有 156 人在线！
+            </div>
+            <!-- .left -->
+
+            <div id="create_room">
+                <form action="create_room" method="post">
+                    <input type="submit" class="btn btn-default" value="创建房间">
+                </form>
+            </div>
+        </div>
+
+        ## --------- 房间列表 ---------
+
+        <div class="rooms-wrap">
+
+            <ul class="rooms" lang="zh-CN">
+
+                <!-- Room name -->
+                <li class="name">
+                    <form action="http://drrr.com/room/" method="post">
+                        <button class="btn btn-link select-text lounge-room-name" type="submit" name="login"
+                                value="糯糯总攻家族">
+                            糯糯总攻家族 <span class="room-badge room-badge-music bstooltip" data-toggle="tooltip"
+                                         title="音乐房间">♬</span>
+                        </button>
+                        <input type="hidden" name="id" value="3e3c482970c156fc3b16c47bf6dd241e">
+                    </form>
+                </li>
+
+                <!-- Creator -->
+                <li class="creator">
+                    <span class="symbol symbol-kakka"></span>
+                    Hellsythe
+                </li>
+
+                <!-- Status -->
+                <li class="status">
+                    <div class="progress-bar-label-wrap">
+                        <div class="progress-bar-label bstooltip"
+                             data-title="
+                             <div class='avatar-wrap'>
+						        <span class='symbol symbol-kakka'></span>
+						        Hellsythe
+						     </div>
+						     <div class='avatar-wrap'>
+						        <span class='symbol symbol-setton'></span>
+						        羽渡
+						     </div>
+						     " data-html="true">
+                            2 / 11
+                        </div>
+                    </div>
+                    <div class="progress progress-desktop" style="width: 55%;">
+                        <div class="progress-bar " role="progressbar" aria-valuenow="18.181818181818" aria-valuemin="0"
+                             aria-valuemax="100" style="width: 18.181818181818%;"></div>
+                    </div>
+                </li>
+
+                <!-- Admin area -->
+            </ul>
+
+        </div>
+    </div>
+
+    ## --------- 底部 ---------
+
+    <div class="lounge-footer text-center">
+        <ul class="list-unstyled list-inline">
+            <li data-langs-hide="zh-CN zh-TW"><a href="/static-en/">离线讨论</a></li>
+            <li data-hide="true" data-langs="zh-CN zh-TW"><a href="/static/">离线讨论</a></li>
+            <li><a href="#">FAQ</a></li>
+            <li><a href="#">应用</a></li>
+            <li><a href="#">资源</a></li>
+            <li><a href="#">日志</a></li>
+            <li><a href="#">更新记录</a></li>
+            <li><a href="#">译者</a></li>
+            <li><a href="#">捐助</a></li>
+            <li><a href="#">关于</a></li>
+        </ul>
+
+        <ul class="list-unstyled list-inline timezone">
+            <li title="05-19-2015">UTC 04:48</li>
+            <li title="05-19-2015">NRT 13:48</li>
+            <li title="05-19-2015">PVG 12:48</li>
+            <li title="05-19-2015">JFK 00:48</li>
+            <li title="05-18-2015">LAX 21:48</li>
+        </ul>
+    </div>
+</div>
+</body>
+</html>
