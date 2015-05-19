@@ -6,6 +6,33 @@
     <title>聊天室 - DOLLARS 聊天室</title>
     <link href="css/app.css" rel="stylesheet">
     <script src="js/jquery-2.1.4.min.js"></script>
+    <script src="js/simplesocket.js"></script>
+    <script src="js/messages.js"></script>
+    <script type='application/javascript'>
+        $(document).ready(function () {
+
+            var SERVER_ADDR = 'ws://localhost:10033/ws';
+            var connected = false;
+            var socket = null;
+
+            socket = new SimpleSocketHandler(SERVER_ADDR);
+
+            socket.bind(MessageTypes.WS_OPEN, function () {
+                console.log("opened");
+                connected = true;
+            });
+
+            socket.bind(MessageTypes.WS_CLOSE, function () {
+                connected = false;
+                // show an alert message
+                $('#connection_lost_alert').removeClass('hidden');
+                // disable all the buttons which could trigger a "send"
+                $('.link').off('click').removeClass('link');
+
+            });
+
+        });
+    </script>
 </head>
 <body>
 <div id="body">

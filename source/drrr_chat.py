@@ -7,6 +7,9 @@ from drrr_room import Room
 from settings import *
 from mako.lookup import TemplateLookup
 from utils import token_util
+from ws4py.server.cherrypyserver import WebSocketPlugin, WebSocketTool
+from utils.sock import GenericWebSocket
+from utils.wscontroller import WsController
 
 lookup = TemplateLookup(directories=['statics'],
                         input_encoding='utf-8',
@@ -19,12 +22,14 @@ class DrrrChat(object):
         无头骑士异闻录聊天室
     """
 
+    controller = WsController()
+
     @cherrypy.expose()
     def index(self):
         if cherrypy.session.has_key('user') and cherrypy.session['user'] is not None:
             raise cherrypy.HTTPRedirect('/lounge')
         return lookup.get_template("login.html").render(token=token_util.random_token(),
-                            uip=token_util.get_uip(cherrypy.request.remote.ip))
+                                                        uip=token_util.get_uip(cherrypy.request.remote.ip))
 
     @cherrypy.expose()
     def login(self, name, token, uip, language, icon, login):
@@ -65,6 +70,12 @@ class DrrrChat(object):
         room = cherrypy.session['room']
         return lookup.get_template("room.html").render(user=user, room=room)
 
+    @cherrypy.expose
+    def ws(self):
+        # you can access the class instance through the following:
+        handler = cherrypy.request.ws_handler
+        handler.set_controller(self.controller)
+        handler.set_close_callback(lambda: self.controller.unregister_client_socket(handler))
 
 
 if __name__ == '__main__':
@@ -72,6 +83,10 @@ if __name__ == '__main__':
         '/': {
             'tools.sessions.on': True,
             'tools.staticdir.root': os.path.abspath(os.getcwd())
+        },
+        '/ws': {
+            'tools.websocket.on': True,
+            'tools.websocket.handler_cls': GenericWebSocket
         },
         '/static': {
             'tools.staticdir.on': True,
@@ -93,4 +108,8 @@ if __name__ == '__main__':
     cherrypy.config.update({'server.socket_host': '0.0.0.0',
                             'server.socket_port': 10033,
                             })
+
+    WebSocketPlugin(cherrypy.engine).subscribe()
+    cherrypy.tools.websocket = WebSocketTool()
+
     cherrypy.quickstart(DrrrChat(), "/", conf)
