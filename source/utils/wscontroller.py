@@ -5,6 +5,11 @@ import log
 import json
 from math import floor
 
+import sys
+
+reload(sys)
+sys.setdefaultencoding("utf-8")
+
 __author__ = 'Lucy Linder'
 
 
@@ -18,6 +23,8 @@ class WsController:
         Create a WebSocket controller
         """
         self.client_sockets = set()
+        self.room_list = []
+        self.user_list = []
         self.hellos = {}
 
     # ----------------------------------------------------
@@ -30,9 +37,10 @@ class WsController:
         from the Server.ws() method of the server.
         @param socket the client socket to add
         """
-        log.info(self, 'client registered')
+        log.info(self, '有客户端注册上来了..')
         self.client_sockets.add(socket)
         self.hellos[socket] = 0
+        log.info(self, '当前连接的客户端数量:' + str(len(self.client_sockets)))
 
     def unregister_client_socket(self, socket):
         """
@@ -42,17 +50,19 @@ class WsController:
         @param socket the client socket to remove
         """
         if socket in self.client_sockets:
-            log.info(self, 'client unregistered')
+            log.info(self, '客户端退出..')
             self.client_sockets.remove(socket)
+        log.info(self, '当前连接的客户端数量:' + str(len(self.client_sockets)))
 
     # ----------------------------------------------------
 
     def broadcast(self, msg_type, msg):
         """
-        Send a message to all the registered clients.
+        Send a message to all the registered clients. 广播
         @param msg_type the message type
         @param msg the data
         """
+        log.info(self, '要广播的客户端数量:' + str(len(self.client_sockets)))
         for client in self.client_sockets:
             client.send_msg(msg_type, msg)
 
@@ -95,3 +105,25 @@ class WsController:
             nbrs[1] = r
 
         socket.send_msg('gdc', sorted(nbrs)[0])
+
+    # ----------------------------------------------------
+    def open_room(self, data, socket):
+
+        """
+        打开房间
+        :param data:
+        :param socket:
+        :return:
+        """
+        nbrs = json.loads(data)
+        log.info(self, '有人进入了房间' + str(nbrs['room']))
+
+        for user in self.user_list:
+            if user.token == str(nbrs['user_token']):
+                socket.user = user
+
+        self.broadcast('open_room_ok', data)  # 向所有人广播
+
+    def send_message(self, data, socket):
+        message = json.loads(data)
+        self.broadcast('send_message_success', data)

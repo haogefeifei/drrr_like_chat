@@ -8,6 +8,7 @@
     <script src="js/jquery-2.1.4.min.js"></script>
     <script src="js/simplesocket.js"></script>
     <script src="js/messages.js"></script>
+    <script src="js/room.js"></script>
     <script type='application/javascript'>
         $(document).ready(function () {
 
@@ -20,16 +21,49 @@
             socket.bind(MessageTypes.WS_OPEN, function () {
                 console.log("opened");
                 connected = true;
+
+                var date = JSON.stringify({user: "${user.name}", user_token: "${user.token}", room: "${room.name}"});
+                socket.send(MessageTypes.OPEN_ROOM, date);
             });
 
             socket.bind(MessageTypes.WS_CLOSE, function () {
                 connected = false;
-                // show an alert message
-                $('#connection_lost_alert').removeClass('hidden');
-                // disable all the buttons which could trigger a "send"
-                $('.link').off('click').removeClass('link');
 
             });
+
+
+            $(window).unload(function () {
+                socket.onclose = function () {  // disable onclose handler first
+                };
+                socket.close();
+            });
+
+
+            socket.bind(MessageTypes.OPEN_ROOM_OK, function (data) {
+
+                var message = JSON.parse(data)
+
+                 $('#talks').append(">>>>欢迎" + message.user + "进入房间 </br>");
+            });
+
+
+            socket.bind(MessageTypes.SEND_MESSAGE_SUCCESS, function (data) {
+
+                var message = JSON.parse(data)
+
+                $('#talks').append(message.user + ":" + message.message + "</br>");
+            });
+
+            //发送消息
+            $("#message").submit(function() {
+
+                var message = $("#message textarea").val();
+                var date = JSON.stringify({user: "${user.name}", message: message});
+                socket.send(MessageTypes.SEND_MESSAGE, date);
+
+                return false;
+            });
+
 
         });
     </script>
@@ -95,269 +129,8 @@
     </div>
     <div id="talks_box" class="select-none">
         <div id="talks" class="talks">
-            <div class="talk system" time="1432029777" id="1544dfa2f9f405dbe3ba953bb0ac74f5"
-                 uid="0e0892e8d700356ac4f1ba67ff7a208b">►► 好个飞飞 加入房间
-            </div>
-            <div class="talk system" time="1432029777" id="d39ca5317b4e79b6f4124d57d8e6bc78"
-                 uid="bce174743fdce85aff084c52cbeb21ea">►► 熊吉 连接超时被中断
-            </div>
-            <div class="talk system select-text" time="1432029757" id="651bd94a3e92fff45cb043623aa38ca4"
-                 uid="a33b18fe8a3569634da8395ff29eb559" music="Hacking to the Gate - いとうかなこ"
-                 url="http://m1.music.126.net/sJZm3t6fisog2dmAYGnjTQ==/2091271116042911.mp3" 0>►► 静静 分享了「Hacking to the
-                Gate - いとうかなこ」
-            </div>
-            <div class="talk system" time="1432029745" id="88da78b3635d430bd4bd9eb3cbaa8cab"
-                 uid="a33b18fe8a3569634da8395ff29eb559">►► 静静 加入房间
-            </div>
-            <dl class="talk setton" time="1432029705" id="d27553cf5c162a92d2257178a1124826"
-                uid="21741aa8d79d4d396c6d5e9e564b3f89" data-ip="MS4xNzIuMTc0LjE4MA==">
-                <dt class="dropdown">
-                <div class="avatar avatar-setton"><span>宮沢賢治</span></div>
-                <div data-toggle="dropdown" class="name"><span class="select-text">宮沢賢治</span></div>
-                <ul class="dropdown-menu" role="menu">
-                    <li><a tabindex="-1" class="dropdown-item-reply">@<span>宮沢賢治</span></a></li>
-                </ul>
-                </dt>
-                <dd>
-                    <div class="bubble">
-                        <p class="body select-text">從我耳邊傳來了死亡之音</p>
-                    </div>
-                </dd>
-            </dl>
-            <div class="talk system" time="1432029700" id="c9caf4432449718be0db3d1448b3b16e"
-                 uid="1826ffdddb405e8ae72c42c37448e54a">►► neko 退出房间
-            </div>
-            <dl class="talk setton" time="1432029695" id="6b0ec05af4dfd6d4611847a4731e973d"
-                uid="21741aa8d79d4d396c6d5e9e564b3f89" data-ip="MS4xNzIuMTc0LjE4MA==">
-                <dt class="dropdown">
-                <div class="avatar avatar-setton"><span>宮沢賢治</span></div>
-                <div data-toggle="dropdown" class="name"><span class="select-text">宮沢賢治</span></div>
-                <ul class="dropdown-menu" role="menu">
-                    <li><a tabindex="-1" class="dropdown-item-reply">@<span>宮沢賢治</span></a></li>
-                </ul>
-                </dt>
-                <dd>
-                    <div class="bubble">
-                        <p class="body select-text">剛。。剛才</p>
-                    </div>
-                </dd>
-            </dl>
-            <dl class="talk kyo-2x" time="1432029694" id="8390988a8a65a249777367bc7ed44d46"
-                uid="1fb26bcf361a1f72c98a67562bba90ae" data-ip="MTQuMTUyLjY5LjIzOA==">
-                <dt class="dropdown">
-                <div class="avatar avatar-kyo-2x"><span>九十九屋</span></div>
-                <div data-toggle="dropdown" class="name"><span class="select-text">九十九屋</span></div>
-                <ul class="dropdown-menu" role="menu">
-                    <li><a tabindex="-1" class="dropdown-item-reply">@<span>九十九屋</span></a></li>
-                </ul>
-                </dt>
-                <dd>
-                    <div class="bubble">
-                        <p class="body select-text">欢迎</p>
-                    </div>
-                </dd>
-            </dl>
-            <dl class="talk gg" time="1432029692" id="70935793e01d3ddd909cd0a0052a3c71"
-                uid="1826ffdddb405e8ae72c42c37448e54a" data-ip="MTI0LjExMi4yMjAuNTg=">
-                <dt class="dropdown">
-                <div class="avatar avatar-gg"><span>neko</span></div>
-                <div data-toggle="dropdown" class="name"><span class="select-text">neko</span></div>
-                <ul class="dropdown-menu" role="menu">
-                    <li><a tabindex="-1" class="dropdown-item-reply">@<span>neko</span></a></li>
-                </ul>
-                </dt>
-                <dd>
-                    <div class="bubble">
-                        <p class="body select-text">喵</p>
-                    </div>
-                </dd>
-            </dl>
-            <div class="talk system" time="1432029683" id="d4f597b06f776478e289c0cb9fed4bd3"
-                 uid="21741aa8d79d4d396c6d5e9e564b3f89">►► 宮沢賢治 加入房间
-            </div>
-            <div class="talk system" time="1432029667" id="7b09f9d235c769042181204953d4f633"
-                 uid="1826ffdddb405e8ae72c42c37448e54a">►► neko 加入房间
-            </div>
-            <dl class="talk gg" time="1432029585" id="96c437b3b1e3af850c41ab1e2233e50c"
-                uid="4fc399380a0cc04568a6f5855f871aaa" data-ip="NTguNTYuMjIuMjI2">
-                <dt class="dropdown">
-                <div class="avatar avatar-gg"><span>平底锅</span></div>
-                <div data-toggle="dropdown" class="name"><span class="select-text">平底锅</span></div>
-                <ul class="dropdown-menu" role="menu">
-                    <li><a tabindex="-1" class="dropdown-item-reply">@<span>平底锅</span></a></li>
-                </ul>
-                </dt>
-                <dd>
-                    <div class="bubble">
-                        <p class="body select-text">午好w</p>
-                    </div>
-                </dd>
-            </dl>
-            <dl class="talk kyo-2x" time="1432029541" id="289b20947ce08f108d13fcc490f0818b"
-                uid="1fb26bcf361a1f72c98a67562bba90ae" data-ip="MTQuMTUyLjY5LjIzOA==">
-                <dt class="dropdown">
-                <div class="avatar avatar-kyo-2x"><span>九十九屋</span></div>
-                <div data-toggle="dropdown" class="name"><span class="select-text">九十九屋</span></div>
-                <ul class="dropdown-menu" role="menu">
-                    <li><a tabindex="-1" class="dropdown-item-reply">@<span>九十九屋</span></a></li>
-                </ul>
-                </dt>
-                <dd>
-                    <div class="bubble">
-                        <p class="body select-text">你好</p>
-                    </div>
-                </dd>
-            </dl>
-            <dl class="talk gg" time="1432029517" id="cf7bd4725899fa41ba4e272f3b58330a"
-                uid="4fc399380a0cc04568a6f5855f871aaa" data-ip="NTguNTYuMjIuMjI2">
-                <dt class="dropdown">
-                <div class="avatar avatar-gg"><span>平底锅</span></div>
-                <div data-toggle="dropdown" class="name"><span class="select-text">平底锅</span></div>
-                <ul class="dropdown-menu" role="menu">
-                    <li><a tabindex="-1" class="dropdown-item-reply">@<span>平底锅</span></a></li>
-                </ul>
-                </dt>
-                <dd>
-                    <div class="bubble">
-                        <p class="body select-text">人</p>
-                    </div>
-                </dd>
-            </dl>
-            <dl class="talk kyo-2x" time="1432029409" id="118540833a23e34aa6da5b42d45800a5"
-                uid="1fb26bcf361a1f72c98a67562bba90ae" data-ip="MTQuMTUyLjY5LjIzOA==">
-                <dt class="dropdown">
-                <div class="avatar avatar-kyo-2x"><span>九十九屋</span></div>
-                <div data-toggle="dropdown" class="name"><span class="select-text">九十九屋</span></div>
-                <ul class="dropdown-menu" role="menu">
-                    <li><a tabindex="-1" class="dropdown-item-reply">@<span>九十九屋</span></a></li>
-                </ul>
-                </dt>
-                <dd>
-                    <div class="bubble">
-                        <p class="body select-text">没人？</p>
-                    </div>
-                </dd>
-            </dl>
-            <div class="talk system" time="1432029396" id="f788fd4f7a9585cccb535bb48b2031b3"
-                 uid="4fc399380a0cc04568a6f5855f871aaa">►► 平底锅 加入房间
-            </div>
-            <div class="talk system" time="1432029396" id="8c993591fc54c80f355499fa7c44a6d5"
-                 uid="e40214ff2bd27844a796bac288f7824b">►► 点歌的羽渡 连接超时被中断
-            </div>
-            <div class="talk system" time="1432029245" id="065dea64b311bb3277369b179f3b7e1f"
-                 uid="56aae2e326ae7814c872a26142a5700c">►► 被讨厌的 流氓 退出房间
-            </div>
-            <div class="talk system" time="1432029226" id="161d123e0759b4559ddbfff9b5b05985"
-                 uid="d4edb3e9be18837a3d564a3b3f9d8594">►► 卡米 退出房间
-            </div>
-            <div class="talk system" time="1432029213" id="0b980d7bf9bc103121ca58a8b66e4d73"
-                 uid="d4edb3e9be18837a3d564a3b3f9d8594">►► 卡米 加入房间
-            </div>
-            <div class="talk system" time="1432029208" id="5f671bac549e750753fb9f2db571092d"
-                 uid="1fb26bcf361a1f72c98a67562bba90ae">►► 九十九屋 加入房间
-            </div>
-            <div class="talk system" time="1432029206" id="1b62f54fa959275f8cd7cba34ba78665"
-                 uid="56aae2e326ae7814c872a26142a5700c">►► 被讨厌的 流氓 加入房间
-            </div>
-            <div class="talk system" time="1432029139" id="d684a86620f8ae4dfca718c503bb4030"
-                 uid="56aae2e326ae7814c872a26142a5700c">►► 被讨厌的 流氓 退出房间
-            </div>
-            <div class="talk system" time="1432029117" id="ec000e29979da1fb6afa5241b7a88434"
-                 uid="99f498dce9f6e0dcf749c60b8173a6ba">►► (:3」∠) 退出房间
-            </div>
-            <div class="talk system" time="1432029099" id="d43c619d44ba87fae345f50d1d5b8882"
-                 uid="99f498dce9f6e0dcf749c60b8173a6ba">►► (:3」∠) 加入房间
-            </div>
-            <dl class="talk bakyura" time="1432029067" id="a87e3f0e7408576820b310cfd679cefa"
-                uid="56aae2e326ae7814c872a26142a5700c" data-ip="MTIzLjE1MC4xMDguNTc=">
-                <dt class="dropdown">
-                <div class="avatar avatar-bakyura"><span>被讨厌的 流氓</span></div>
-                <div data-toggle="dropdown" class="name"><span class="select-text">被讨厌的 流氓</span></div>
-                <ul class="dropdown-menu" role="menu">
-                    <li><a tabindex="-1" class="dropdown-item-reply">@<span>被讨厌的 流氓</span></a></li>
-                </ul>
-                </dt>
-                <dd>
-                    <div class="bubble">
-                        <p class="body select-text">中文版的任务头像logo和国际版的logo不一样啊</p>
-                    </div>
-                </dd>
-            </dl>
-            <div class="talk system" time="1432029024" id="b7fcc6b79dd271244f6d007866e9457f"
-                 uid="b27dfd8eee9c41344e538b80c95f1fde">►► 士龙 退出房间
-            </div>
-            <div class="talk system" time="1432029017" id="24e22d1bdb41bde4995b931af59c90f1"
-                 uid="b27dfd8eee9c41344e538b80c95f1fde">►► 士龙 加入房间
-            </div>
-            <div class="talk system" time="1432029017" id="414d79ccb516580e0d27a41078f18569"
-                 uid="6b9a0b405562b5c736499f027a1ecba3">►► aaaaa 连接超时被中断
-            </div>
-            <div class="talk system" time="1432029001" id="9de7dc052b273966d24d108f3e91b138"
-                 uid="56aae2e326ae7814c872a26142a5700c">►► 被讨厌的 流氓 加入房间
-            </div>
-            <div class="talk system" time="1432029001" id="f0c36599cee4fe26e778bda21174573c"
-                 uid="6b9a0b405562b5c736499f027a1ecba3">►► aaaaa 连接超时被中断
-            </div>
-            <div class="talk system" time="1432029001" id="5072b39703c3548f8563500194e3ece6"
-                 uid="74b6ac5ceadff2f7ad51633c2eabae0c">►► sayi 连接超时被中断
-            </div>
-            <div class="talk system" time="1432028639" id="8339690f510b46e97adfac83f29d206a"
-                 uid="66a22b2f410848652ba849afa02829b5">►► lily 退出房间
-            </div>
-            <div class="talk system" time="1432028635" id="88f6f97f4d50dc250427c2e918fde291"
-                 uid="66a22b2f410848652ba849afa02829b5">►► lily 加入房间
-            </div>
-            <div class="talk system" time="1432028635" id="56b42fc00867c64eb2b54fdf269e8344"
-                 uid="66a22b2f410848652ba849afa02829b5">►► lily 退出房间
-            </div>
-            <div class="talk system" time="1432028624" id="6b35845625a157b0ee6f861d35cdc4c6"
-                 uid="66a22b2f410848652ba849afa02829b5">►► lily 加入房间
-            </div>
-            <dl class="talk zaika-2x" time="1432028494" id="d87c6207a257fdd4c4cb4faef32b1f01"
-                uid="bb9d583de604c7c6e0e203e58eb1829f" data-ip="MTgzLjI2LjI0Mi4yMjY=">
-                <dt class="dropdown">
-                <div class="avatar avatar-zaika-2x"><span>三文治</span></div>
-                <div data-toggle="dropdown" class="name"><span class="select-text">三文治</span></div>
-                <ul class="dropdown-menu" role="menu">
-                    <li><a tabindex="-1" class="dropdown-item-reply">@<span>三文治</span></a></li>
-                </ul>
-                </dt>
-                <dd>
-                    <div class="bubble">
-                        <p class="body select-text">怎么，没人了</p>
-                    </div>
-                </dd>
-            </dl>
-            <dl class="talk tanaka-2x" time="1432028190" id="d0d5ae80fb623cfb3bbaa4ca4c09fd44"
-                uid="84c53aab6dbff222efc61bad73273a2e" data-ip="MTcxLjIxMy42Mi42NA==">
-                <dt class="dropdown">
-                <div class="avatar avatar-tanaka-2x"><span>鲷鱼烧</span></div>
-                <div data-toggle="dropdown" class="name"><span class="select-text">鲷鱼烧</span></div>
-                <ul class="dropdown-menu" role="menu">
-                    <li><a tabindex="-1" class="dropdown-item-reply">@<span>鲷鱼烧</span></a></li>
-                </ul>
-                </dt>
-                <dd>
-                    <div class="bubble">
-                        <p class="body select-text">诶</p>
-                    </div>
-                </dd>
-            </dl>
-            <dl class="talk tanaka-2x" time="1432028169" id="74626a4b5fd07330420201309e245e00"
-                uid="84c53aab6dbff222efc61bad73273a2e" data-ip="MTcxLjIxMy42Mi42NA==">
-                <dt class="dropdown">
-                <div class="avatar avatar-tanaka-2x"><span>鲷鱼烧</span></div>
-                <div data-toggle="dropdown" class="name"><span class="select-text">鲷鱼烧</span></div>
-                <ul class="dropdown-menu" role="menu">
-                    <li><a tabindex="-1" class="dropdown-item-reply">@<span>鲷鱼烧</span></a></li>
-                </ul>
-                </dt>
-                <dd>
-                    <div class="bubble">
-                        <p class="body select-text">嗨嗨</p>
-                    </div>
-                </dd>
-            </dl>
+
+
         </div>
         <!-- /#talks -->
     </div>

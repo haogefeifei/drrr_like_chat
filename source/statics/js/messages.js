@@ -14,6 +14,12 @@ var MessageTypes = {
     IN_GDC: "gdc",
     // outgoing messages
     OUT_GDC: "compute_gdc",
-    OUT_HELLO_WOLRD: "hello"
+    OUT_HELLO_WOLRD: "hello",
+
+    OPEN_ROOM: "open_room",
+    OPEN_ROOM_OK: "open_room_ok",
+
+    SEND_MESSAGE: "send_message",
+    SEND_MESSAGE_SUCCESS: "send_message_success"
 
 };

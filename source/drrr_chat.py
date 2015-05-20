@@ -34,6 +34,7 @@ class DrrrChat(object):
     @cherrypy.expose()
     def login(self, name, token, uip, language, icon, login):
         user = User(name, token, uip, language, icon, login)
+        self.controller.user_list.append(user)
         cherrypy.session['user'] = user
         raise cherrypy.HTTPRedirect('/lounge')
 
@@ -41,7 +42,13 @@ class DrrrChat(object):
     def lounge(self):
         if cherrypy.session.has_key('user') and cherrypy.session['user'] is not None:
             user = cherrypy.session['user']
-            return lookup.get_template("lounge.html").render(user=user)
+
+            for room in self.controller.room_list:
+                cherrypy.log("房间: %s, %s" % (room.name, room.id))
+
+            return lookup.get_template("lounge.html")\
+                .render(user=user, room_list=self.controller.room_list,
+                        user_len=len(self.controller.user_list))
         else:
             raise cherrypy.HTTPRedirect('/')
 
@@ -58,8 +65,28 @@ class DrrrChat(object):
     def create_room_ok(self, name, limit):
         if cherrypy.session.has_key('user') and cherrypy.session['user'] is not None:
             user = cherrypy.session['user']
-            room = Room(name, limit, user.icon)
+            room = Room(name, limit, user)
+            room.id = user.uip
+            room.now_num += 1
+            room.now_list.append(user)
             cherrypy.session['room'] = room
+            self.controller.room_list.append(room)
+
+            raise cherrypy.HTTPRedirect('/room')
+        else:
+            raise cherrypy.HTTPRedirect('/')
+
+    @cherrypy.expose()
+    def in_room(self, rid):
+        if cherrypy.session.has_key('user') and cherrypy.session['user'] is not None:
+            user = cherrypy.session['user']
+            for room in self.controller.room_list:
+                if room.id == rid:
+                    if user not in room.now_list:
+                        room.now_num += 1
+                        room.now_list.append(user)
+                    cherrypy.session['room'] = room
+
             raise cherrypy.HTTPRedirect('/room')
         else:
             raise cherrypy.HTTPRedirect('/')

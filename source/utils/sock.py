@@ -26,6 +26,7 @@ class GenericWebSocket(WebSocket):
     """
 
     controller = None
+    user = None
 
     def __init__(self, *args, **kw):
         """
@@ -41,7 +42,7 @@ class GenericWebSocket(WebSocket):
         """
         Called after the handshake, if successful.
         """
-        log.info(self, 'socket opened')
+        log.info(self, 'socket连接打开')
 
 
     def closed(self, code, reason=None):
@@ -49,7 +50,7 @@ class GenericWebSocket(WebSocket):
         Called after the socket closed.
         This will execute the close_callback, if one was registered.
         """
-        log.info(self, 'socket closed')
+        log.info(self, 'socket连接关闭')
         if self.close_callback is not None:
             self.close_callback()
 
@@ -61,7 +62,7 @@ class GenericWebSocket(WebSocket):
         The dictionary will be converted to json for the transport.
         """
         self.send(json.dumps({'type': message_type, 'data': message}))
-        log.info(self, "sent %s: %s" % (message_type, message ))
+        log.info(self, "发送 %s: %s" % (message_type, message ))
 
 
     def received_message(self, payload):
@@ -80,7 +81,7 @@ class GenericWebSocket(WebSocket):
         case it needs to send back an answer to the client.
         """
         payload = json.loads(str(payload))
-        log.info(self, "received %s" % payload)
+        log.info(self, "收到: %s" % payload)
 
         # do nothing if no controller was set
         if self.controller is None: return

@@ -33,10 +33,10 @@
     </ul>
     <div class="wrap">
 
-        ## --------- 公告栏 暂时隐藏 ---------
+        ## --------- 公告栏 暂时隐藏 --------- data-hide="true"
 
-        <div class="lounge-top" data-hide="true">
-            <span data-hide="true" data-langs="zh-CN zh-TW">
+        <div class="lounge-top">
+            <span data-langs="zh-CN zh-TW">
             <a href="../static/">离线讨论</a>
             </span>
 
@@ -60,7 +60,7 @@
             <div class="lounge-links pull-left">
                 <a href="lounge"><b>刷新</b></a>
                 -
-                目前共有 156 人在线！
+                目前共有 ${user_len} 人在线！
             </div>
             <!-- .left -->
 
@@ -75,51 +75,59 @@
 
         <div class="rooms-wrap">
 
-            <ul class="rooms" lang="zh-CN">
+            % for room in room_list:
 
-                <!-- Room name -->
-                <li class="name">
-                    <form action="http://drrr.com/room/" method="post">
-                        <button class="btn btn-link select-text lounge-room-name" type="submit" name="login"
-                                value="糯糯总攻家族">
-                            糯糯总攻家族 <span class="room-badge room-badge-music bstooltip" data-toggle="tooltip"
-                                         title="音乐房间">♬</span>
-                        </button>
-                        <input type="hidden" name="id" value="3e3c482970c156fc3b16c47bf6dd241e">
-                    </form>
-                </li>
+                <ul class="rooms" lang="zh-CN">
 
-                <!-- Creator -->
-                <li class="creator">
-                    <span class="symbol symbol-kakka"></span>
-                    Hellsythe
-                </li>
+                    <!-- Room name -->
+                    <li class="name">
+                        <form action="in_room" method="post">
+                            <button class="btn btn-link select-text lounge-room-name" type="submit"
+                                    value="${room.name}">
+                                ${room.name}
+                                <span class="room-badge room-badge-music bstooltip" data-toggle="tooltip"
+                                      title="音乐房间">♬</span>
+                            </button>
+                            <input type="hidden" name="rid" value="${room.id}">
+                        </form>
+                    </li>
 
-                <!-- Status -->
-                <li class="status">
-                    <div class="progress-bar-label-wrap">
-                        <div class="progress-bar-label bstooltip"
-                             data-title="
+                    <!-- Creator -->
+                    <li class="creator">
+                        <span class="symbol symbol-${room.host_user.icon}"></span>
+                        ${room.host_user.name}
+                    </li>
+
+                    <!-- Status -->
+                    <li class="status">
+                        <div class="progress-bar-label-wrap">
+                            <div class="progress-bar-label bstooltip"
+                                 data-title="
                              <div class='avatar-wrap'>
-						        <span class='symbol symbol-kakka'></span>
-						        Hellsythe
+						        <span class='symbol symbol-${room.host_user.icon}'></span>
+						        ${room.host_user.name}
 						     </div>
 						     <div class='avatar-wrap'>
 						        <span class='symbol symbol-setton'></span>
-						        羽渡
+						        ${room.host_user.name}
 						     </div>
 						     " data-html="true">
-                            2 / 11
+                                ${room.now_num} / ${room.limit_num}
+                            </div>
                         </div>
-                    </div>
-                    <div class="progress progress-desktop" style="width: 55%;">
-                        <div class="progress-bar " role="progressbar" aria-valuenow="18.181818181818" aria-valuemin="0"
-                             aria-valuemax="100" style="width: 18.181818181818%;"></div>
-                    </div>
-                </li>
 
-                <!-- Admin area -->
-            </ul>
+                        <% progress=(100) %>
+                        <div class="progress progress-desktop" style="width: 55%;">
+                            <div class="progress-bar " role="progressbar" aria-valuenow="${progress}"
+                                 aria-valuemin="0"
+                                 aria-valuemax="100" style="width: ${progress}%;"></div>
+                        </div>
+                    </li>
+
+                    <!-- Admin area -->
+                </ul>
+
+            % endfor
 
         </div>
     </div>
