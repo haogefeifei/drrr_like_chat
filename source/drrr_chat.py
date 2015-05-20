@@ -7,9 +7,11 @@ from drrr_room import Room
 from settings import *
 from mako.lookup import TemplateLookup
 from utils import token_util
+from utils import img_generator
 from ws4py.server.cherrypyserver import WebSocketPlugin, WebSocketTool
 from utils.sock import GenericWebSocket
 from utils.wscontroller import WsController
+
 
 lookup = TemplateLookup(directories=['statics'],
                         input_encoding='utf-8',
@@ -29,7 +31,8 @@ class DrrrChat(object):
         if cherrypy.session.has_key('user') and cherrypy.session['user'] is not None:
             raise cherrypy.HTTPRedirect('/lounge')
         return lookup.get_template("login.html").render(token=token_util.random_token(),
-                                                        uip=token_util.get_uip(cherrypy.request.remote.ip))
+                                                        uip=token_util.get_uip(cherrypy.request.remote.ip),
+                                                        head_imgs=img_generator.random_head_img())
 
     @cherrypy.expose()
     def login(self, name, token, uip, language, icon, login):

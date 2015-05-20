@@ -54,96 +54,15 @@
                 </div>
 
                 <ul class="login-icons-list">
-                    <li>
-                        <label>
-                            <div class="user-icon avatar-setton needsclick" data-avatar="setton"></div>
-                            <input type="radio" name="icon" value="setton">
-                        </label>
-                    </li>
-                    <li>
-                        <label>
-                            <div class="user-icon avatar-zaika needsclick" data-avatar="zaika"></div>
-                            <input type="radio" name="icon" value="zaika">
-                        </label>
-                    </li>
-                    <li>
-                        <label>
-                            <div class="user-icon avatar-bakyura-2x needsclick" data-avatar="bakyura-2x"></div>
-                            <input type="radio" name="icon" value="bakyura-2x">
-                        </label>
-                    </li>
-                    <li>
-                        <label>
-                            <div class="user-icon avatar-kakka needsclick" data-avatar="kakka"></div>
-                            <input type="radio" name="icon" value="kakka">
-                        </label>
-                    </li>
-                    <li>
-                        <label>
-                            <div class="user-icon avatar-setton-2x needsclick" data-avatar="setton-2x"></div>
-                            <input type="radio" name="icon" value="setton-2x">
-                        </label>
-                    </li>
-                    <li>
-                        <label>
-                            <div class="user-icon avatar-tanaka needsclick" data-avatar="tanaka"></div>
-                            <input type="radio" name="icon" value="tanaka">
-                        </label>
-                    </li>
-                    <li>
-                        <label>
-                            <div class="user-icon avatar-bakyura needsclick" data-avatar="bakyura"></div>
-                            <input type="radio" name="icon" value="bakyura">
-                        </label>
-                    </li>
-                    <li>
-                        <label>
-                            <div class="user-icon avatar-zawa needsclick" data-avatar="zawa"></div>
-                            <input type="radio" name="icon" value="zawa">
-                        </label>
-                    </li>
-                    <li>
-                        <label>
-                            <div class="user-icon avatar-gg needsclick" data-avatar="gg"></div>
-                            <input type="radio" name="icon" value="gg">
-                        </label>
-                    </li>
-                    <li>
-                        <label>
-                            <div class="user-icon avatar-san-2x needsclick" data-avatar="san-2x"></div>
-                            <input type="radio" name="icon" value="san-2x">
-                        </label>
-                    </li>
-                    <li>
-                        <label>
-                            <div class="user-icon avatar-kanra-2x needsclick" data-avatar="kanra-2x"></div>
-                            <input type="radio" name="icon" value="kanra-2x">
-                        </label>
-                    </li>
-                    <li>
-                        <label>
-                            <div class="user-icon avatar-kanra needsclick" data-avatar="kanra"></div>
-                            <input type="radio" name="icon" value="kanra">
-                        </label>
-                    </li>
-                    <li>
-                        <label>
-                            <div class="user-icon avatar-kyo-2x needsclick" data-avatar="kyo-2x"></div>
-                            <input type="radio" name="icon" value="kyo-2x">
-                        </label>
-                    </li>
-                    <li>
-                        <label>
-                            <div class="user-icon avatar-zaika-2x needsclick" data-avatar="zaika-2x"></div>
-                            <input type="radio" name="icon" value="zaika-2x">
-                        </label>
-                    </li>
-                    <li>
-                        <label>
-                            <div class="user-icon avatar-tanaka-2x needsclick" data-avatar="tanaka-2x"></div>
-                            <input type="radio" name="icon" value="tanaka-2x">
-                        </label>
-                    </li>
+
+                    % for img in head_imgs:
+                        <li>
+                            <label>
+                                <div class="user-icon avatar-${img} needsclick" data-avatar="${img}"></div>
+                                <input type="radio" name="icon" value="${img}">
+                            </label>
+                        </li>
+                    % endfor
                 </ul>
 
             </div>
