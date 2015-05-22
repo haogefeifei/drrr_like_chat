@@ -18,6 +18,7 @@ class User(object):
     user_type = None    # 用户类型
     update = None       # 最后活动时间
     state = None        # 状态
+    room = None
 
     def __init__(self, name=None, token=None, uip=None, language=None, icon=None, login=None):
         self.name = name

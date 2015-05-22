@@ -121,8 +121,15 @@ class WsController:
         for user in self.user_list:
             if user.token == str(nbrs['user_token']):
                 socket.user = user
-
-        self.broadcast('open_room_ok', data)  # 向所有人广播
+        for room in self.room_list:
+            if room.id == str(socket.user.uip):
+                socket.user.room = room
+        obj = {
+            'user': socket.user.name,
+            'room_num': str(len(socket.user.room.now_list))
+        }
+        return_data = json.dumps(obj)
+        self.broadcast('open_room_ok', return_data)  # 向所有人广播
 
     def send_message(self, data, socket):
         message = json.loads(data)

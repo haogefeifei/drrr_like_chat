@@ -43,7 +43,8 @@
 
                 var message = JSON.parse(data)
 
-                 $('#talks').append(">>>>欢迎" + message.user + "进入房间 </br>");
+                $('#talks').append(">>>>欢迎" + message.user + "进入房间 </br>");
+                $('.room-title-capacity').text("(" + message.room_num + ")");
             });
 
 
@@ -55,7 +56,7 @@
             });
 
             //发送消息
-            $("#message").submit(function() {
+            $("#message").submit(function () {
 
                 var message = $("#message textarea").val();
                 var date = JSON.stringify({user: "${user.name}", message: message});
@@ -129,7 +130,9 @@
     </div>
     <div id="talks_box" class="select-none">
         <div id="talks" class="talks">
-
+            % for message in room.message_list:
+                ${message} </br>
+            % endfor
 
         </div>
         <!-- /#talks -->
