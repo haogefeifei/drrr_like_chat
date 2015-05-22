@@ -121,16 +121,34 @@ class WsController:
         for user in self.user_list:
             if user.token == str(nbrs['user_token']):
                 socket.user = user
+
+        message = ">>>>欢迎" + socket.user.name + "进入房间 </br>"
         for room in self.room_list:
             if room.id == str(socket.user.uip):
+                room.add_message_notes(message)  # 添加消息缓存
                 socket.user.room = room
         obj = {
-            'user': socket.user.name,
+            'message': message,
             'room_num': str(len(socket.user.room.now_list))
         }
         return_data = json.dumps(obj)
         self.broadcast('open_room_ok', return_data)  # 向所有人广播
 
     def send_message(self, data, socket):
-        message = json.loads(data)
-        self.broadcast('send_message_success', data)
+        """
+        发送聊天消息，广播给其他人
+        :param data:
+        :param socket:
+        :return:
+        """
+        json_data = json.loads(data)
+        message = json_data['user'] + ":" + json_data['message'] + "</br>"
+        for room in self.room_list:
+            if room.id == str(socket.user.room.id):
+                room.add_message_notes(message)
+        json_obj = {
+            'message': message
+        }
+
+        return_data = json.dumps(json_obj)
+        self.broadcast('send_message_success', return_data)

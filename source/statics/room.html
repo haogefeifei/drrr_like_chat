@@ -10,7 +10,12 @@
     <script src="js/messages.js"></script>
     <script src="js/room.js"></script>
     <script type='application/javascript'>
+
         $(document).ready(function () {
+
+            % for message in room.message_list:
+            $('#talks').append("${message}");
+            % endfor
 
             var SERVER_ADDR = 'ws://localhost:10033/ws';
             var connected = false;
@@ -43,7 +48,7 @@
 
                 var message = JSON.parse(data)
 
-                $('#talks').append(">>>>欢迎" + message.user + "进入房间 </br>");
+                $('#talks').append(message.message);
                 $('.room-title-capacity').text("(" + message.room_num + ")");
             });
 
@@ -52,7 +57,7 @@
 
                 var message = JSON.parse(data)
 
-                $('#talks').append(message.user + ":" + message.message + "</br>");
+                $('#talks').append(message.message);
             });
 
             //发送消息
@@ -130,9 +135,7 @@
     </div>
     <div id="talks_box" class="select-none">
         <div id="talks" class="talks">
-            % for message in room.message_list:
-                ${message} </br>
-            % endfor
+
 
         </div>
         <!-- /#talks -->

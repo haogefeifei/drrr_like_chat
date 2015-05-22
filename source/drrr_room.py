@@ -28,6 +28,7 @@ class Room(object):
         :return:
         """
         if len(self.message_list) > MESSAGE_LIMIT:
-            self.message_list.remove(0)
+            del self.message_list[0]
+        print self.message_list
         self.message_list.append(message)
 
