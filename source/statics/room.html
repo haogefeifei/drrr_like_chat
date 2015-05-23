@@ -27,7 +27,12 @@
                 console.log("opened");
                 connected = true;
 
-                var date = JSON.stringify({user: "${user.name}", user_token: "${user.token}", room: "${room.name}"});
+                var date = JSON.stringify({
+                    user: "${user.name}",
+                    user_token: "${user.token}",
+                    room: "${room.name}",
+                    room_id: "${room.id}"
+                });
                 socket.send(MessageTypes.OPEN_ROOM, date);
             });
 

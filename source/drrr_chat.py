@@ -68,13 +68,12 @@ class DrrrChat(object):
     def create_room_ok(self, name, limit):
         if cherrypy.session.has_key('user') and cherrypy.session['user'] is not None:
             user = cherrypy.session['user']
-            room = Room(name, limit, user)
-            room.id = user.uip
-            room.now_num += 1
-            room.now_list.append(user)
-            cherrypy.session['room'] = room
-            self.controller.room_list.append(room)
-
+            new_room = Room(name, limit, user)
+            new_room.id = user.token
+            new_room.now_num += 1
+            new_room.now_list.append(user)
+            cherrypy.session['room'] = new_room
+            self.controller.room_list.append(new_room)
             raise cherrypy.HTTPRedirect('/room')
         else:
             raise cherrypy.HTTPRedirect('/')

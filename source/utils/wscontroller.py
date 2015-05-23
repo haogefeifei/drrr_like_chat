@@ -56,15 +56,19 @@ class WsController:
 
     # ----------------------------------------------------
 
-    def broadcast(self, msg_type, msg):
+    def broadcast(self, msg_type, room, msg):
         """
         Send a message to all the registered clients. 广播
         @param msg_type the message type
         @param msg the data
         """
-        log.info(self, '要广播的客户端数量:' + str(len(self.client_sockets)))
+        log.info(self, '要广播的房间:' + room.name)
+        user_token_list = []
+        for user in room.now_list:
+            user_token_list.append(user.token)
         for client in self.client_sockets:
-            client.send_msg(msg_type, msg)
+            if client.user.token in user_token_list:
+                client.send_msg(msg_type, msg)
 
     # ----------------------------------------------------
 
@@ -123,16 +127,19 @@ class WsController:
                 socket.user = user
 
         message = ">>>>欢迎" + socket.user.name + "进入房间 </br>"
+        now_room = None
         for room in self.room_list:
-            if room.id == str(socket.user.uip):
+            if room.id == str(nbrs['room_id']):
                 room.add_message_notes(message)  # 添加消息缓存
                 socket.user.room = room
+                now_room = room
+
         obj = {
             'message': message,
             'room_num': str(len(socket.user.room.now_list))
         }
         return_data = json.dumps(obj)
-        self.broadcast('open_room_ok', return_data)  # 向所有人广播
+        self.broadcast('open_room_ok', now_room, return_data)  # 向所有人广播
 
     def send_message(self, data, socket):
         """
@@ -143,12 +150,15 @@ class WsController:
         """
         json_data = json.loads(data)
         message = json_data['user'] + ":" + json_data['message'] + "</br>"
+
+        now_room = None
         for room in self.room_list:
             if room.id == str(socket.user.room.id):
                 room.add_message_notes(message)
+                now_room = room
         json_obj = {
             'message': message
         }
 
         return_data = json.dumps(json_obj)
-        self.broadcast('send_message_success', return_data)
+        self.broadcast('send_message_success', now_room, return_data)

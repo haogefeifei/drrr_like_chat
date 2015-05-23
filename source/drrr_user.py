@@ -8,28 +8,18 @@ class User(object):
     用户对象
     """
 
-    id = 0
-    name = None         # 用户名称
-    token = None        # 令牌
-    uip = None          # uip
-    language = None     # 语言
-    icon = None         # 头像
-    login = None        # 登录
-    user_type = None    # 用户类型
-    update = None       # 最后活动时间
-    state = None        # 状态
-    room = None
-
     def __init__(self, name=None, token=None, uip=None, language=None, icon=None, login=None):
-        self.name = name
-        self.token = token
-        self.uip = uip
-        self.language = language
-        self.icon = icon
-        self.login = login
-        self.update = self.get_now_time()
-        self.user_type = 'populace'
-        self.state = 'draft'  # active
+        self.id = 0
+        self.name = name                        # 用户名称
+        self.token = token                      # 令牌
+        self.uip = uip                          # uip
+        self.language = language                # 语言
+        self.icon = icon                        # 头像
+        self.login = login                      # 登录
+        self.update = self.get_now_time()       # 最后活动时间
+        self.user_type = 'populace'             # 用户类型
+        self.state = 'draft'  # active          # 状态
+        self.room = None
 
     @staticmethod
     def get_now_time():
