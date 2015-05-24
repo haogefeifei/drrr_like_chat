@@ -162,3 +162,15 @@ class WsController:
 
         return_data = json.dumps(json_obj)
         self.broadcast('send_message_success', now_room, return_data)
+
+    def out_room(self, data, socket):
+        """
+        退出房间
+        :param data:
+        :param socket:
+        :return:
+        """
+        json_data = json.loads(data)
+        log.info(self, '有人退出了房间' + str(json_data['room']))
+
+        socket.send_msg('out_room_success', sorted(json_data)[0])

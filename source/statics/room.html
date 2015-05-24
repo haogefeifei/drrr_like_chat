@@ -27,7 +27,10 @@
                 console.log("opened");
                 connected = true;
 
-                if(${user.in_room_num} < 2){
+                if (${user.in_room_num} <
+                2
+                )
+                {
                     var date = JSON.stringify({
                         user: "${user.name}",
                         user_token: "${user.token}",
@@ -38,7 +41,9 @@
                 }
 
 
-            });;;
+            });
+            ;
+            ;
 
             socket.bind(MessageTypes.WS_CLOSE, function () {
                 connected = false;
@@ -79,6 +84,23 @@
                 return false;
             });
 
+            $("#logout").click(function () {
+
+                var date = JSON.stringify({
+                    user: "${user.name}",
+                    user_token: "${user.token}",
+                    room: "${room.name}",
+                    room_id: "${room.id}"
+                });
+                socket.send(MessageTypes.OUT_ROOM, date);
+            });
+
+            //退出房间成功
+            socket.bind(MessageTypes.OUT_ROOM_SUCCESS, function (data) {
+
+                alert("退出房间成功");
+            });
+
         });
     </script>
 </head>
@@ -94,7 +116,7 @@
                     </h2>
 
                     <ul class="menu">
-                        <li class="logout"><input type="submit" name="logout" value=" 登出 "/></li>
+                        <li class="logout"><input id="logout" type="button" name="logout" value=" 登出 "/></li>
                         <li></li>
                     </ul>
 

@@ -20,6 +20,9 @@ var MessageTypes = {
     OPEN_ROOM_OK: "open_room_ok",
 
     SEND_MESSAGE: "send_message",
-    SEND_MESSAGE_SUCCESS: "send_message_success"
+    SEND_MESSAGE_SUCCESS: "send_message_success",
+
+    OUT_ROOM: "out_room",
+    OUT_ROOM_SUCCESS: "out_room_success"
 
 };
