@@ -14,7 +14,7 @@
         $(document).ready(function () {
 
             % for message in room.message_list:
-            $('#talks').append("${message}");
+                $('#talks').append("${message}");
             % endfor
 
             var SERVER_ADDR = 'ws://localhost:10033/ws';
@@ -75,7 +75,6 @@
                 return false;
             });
 
-
         });
     </script>
 </head>
@@ -89,23 +88,12 @@
                         <span class="room-title-capacity">(${room.now_num})</span>
                         <span class="room-title-name">${room.name}</span>
                     </h2>
+
                     <ul class="menu">
-                        <li id="musicShare" class="music needsclick"></li>
-                        <li class="setting needsclick "></li>
-                        <li class="dropdown">
-                            <a class="preferences" role="button" data-toggle="dropdown" href="#">Settings</a>
-                            <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="drop6">
-                                <li class="sound needsclick">
-                                    <a class="needsclick" role="menuitem" tabindex="-1">
-                                        提示音 <span class="sound-indicator pull-right"></span>
-                                    </a>
-                                </li>
-                                <li role="presentation" class="divider"></li>
-                                <li class="logout needsclick"><a class="btn-link" type="submit" name="logout">登出</a>
-                                </li>
-                            </ul>
-                        </li>
+                        <li class="logout"><input type="submit" name="logout" value=" 登出 "/></li>
+                        <li></li>
                     </ul>
+
                 </div>
 
                 <div class="room-input-wrap">
@@ -133,9 +121,8 @@
                     <li id="user_icon">bakyura</li>
                     <li id="user_ip">MTEzLjc2LjE0Ni4xMTM=</li>
                 </ul>
+
             </form>
-
-
         </div>
     </div>
     <div id="talks_box" class="select-none">
