@@ -96,6 +96,8 @@ class DrrrChat(object):
     @cherrypy.expose()
     def room(self):
         user = cherrypy.session['user']
+        user.in_room_num += 1
+        cherrypy.session['user'] = user
         room = cherrypy.session['room']
         return lookup.get_template("room.html").render(user=user, room=room)
 

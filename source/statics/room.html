@@ -27,14 +27,18 @@
                 console.log("opened");
                 connected = true;
 
-                var date = JSON.stringify({
-                    user: "${user.name}",
-                    user_token: "${user.token}",
-                    room: "${room.name}",
-                    room_id: "${room.id}"
-                });
-                socket.send(MessageTypes.OPEN_ROOM, date);
-            });
+                if(${user.in_room_num} < 2){
+                    var date = JSON.stringify({
+                        user: "${user.name}",
+                        user_token: "${user.token}",
+                        room: "${room.name}",
+                        room_id: "${room.id}"
+                    });
+                    socket.send(MessageTypes.OPEN_ROOM, date);
+                }
+
+
+            });;;
 
             socket.bind(MessageTypes.WS_CLOSE, function () {
                 connected = false;
@@ -51,7 +55,7 @@
 
             socket.bind(MessageTypes.OPEN_ROOM_OK, function (data) {
 
-                var message = JSON.parse(data)
+                var message = JSON.parse(data);
 
                 $('#talks').append(message.message);
                 $('.room-title-capacity').text("(" + message.room_num + ")");
@@ -60,7 +64,7 @@
 
             socket.bind(MessageTypes.SEND_MESSAGE_SUCCESS, function (data) {
 
-                var message = JSON.parse(data)
+                var message = JSON.parse(data);
 
                 $('#talks').append(message.message);
             });

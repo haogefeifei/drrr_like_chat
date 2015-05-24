@@ -20,6 +20,7 @@ class User(object):
         self.user_type = 'populace'             # 用户类型
         self.state = 'draft'  # active          # 状态
         self.room = None
+        self.in_room_num = 0
 
     @staticmethod
     def get_now_time():
